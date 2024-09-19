@@ -1,0 +1,82 @@
+
+const readFile = (callback = () => {}) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const content = 'une jam nje intern fullstack developer';
+            callback(content);
+            resolve(content);
+        }, 1000);
+    });
+};
+
+const transformContent = (content, callback = () => {}) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const transformedContent = content.toUpperCase();
+            callback(transformedContent);
+            resolve(transformedContent);
+        }, 2000);
+    });
+};
+
+const saveFile = (content, callback = () => {}) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            console.log('File saved with content:', content);
+            callback();
+            resolve();
+        }, 3000);
+    });
+};
+
+const logCompletition = (callback = () => {}) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            console.log('File processing completed');
+            callback();
+            resolve();
+        }, 4000);
+    });
+};
+
+const processFileWithCallbacks = () => {
+   
+    readFile((content) => { 
+        console.log("Read content:", content);
+
+        transformContent(content, (transformedContent) => {
+            console.log("Transformed content:", transformedContent);
+
+            saveFile(transformedContent, () => {
+
+                logCompletition(() => {
+                    console.log("Process completed.");
+                });
+            });
+        });
+    });
+};
+
+
+
+const processFileWithPromises = () => {
+    readFile()
+        .then((content) => {
+            console.log('read content:', content);
+            return transformContent(content);
+        })
+        .then((transformedContent) => {
+            console.log('transformed content:', transformedContent);
+            return saveFile(transformedContent);
+        })
+        .then(() => {
+            return logCompletition();
+        })
+        .then(() => {
+            console.log('process completed');
+        });
+};
+
+
+//processFileWithCallbacks();
+processFileWithPromises();
